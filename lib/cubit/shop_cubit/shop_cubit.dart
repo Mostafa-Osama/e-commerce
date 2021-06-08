@@ -138,32 +138,16 @@ class ShopCubit extends Cubit<ShopStates> {
       'quantity': quantity,
       'date': DateTime.now().toString(),
     }).then((value) {
-      pId.add(value.id.toString());
-      print(value.id.toString());
-      print("index 0 = ${pId[0]}");
-      print("index 1 = ${pId[1]}");
-      print("index 2 = ${pId[2]}");
-      //getFromCart();
+
+
       emit(SetToCartSuccessState());
     }).catchError((onError) {
+      print(onError.toString());
       emit(SetToCartErrorState());
     });
   }
 
-  // void getFromCart() {
-  //   cartModel = [];
-  //   emit(GetFromCartLoadingState());
-  //   FirebaseFirestore.instance.collection('users').doc(uId).collection('cart').orderBy('date').get().then((value) {
-  //     value.docs.forEach((element) {
-  //       cartModel.add(CartModel.fromJson(element.data()));
-  //     });
-  //     emit(GetFromCartSuccessState());
-  //     getTotalPrice();
-  //   }).catchError((onError){
-  //     print(onError.toString());
-  //     emit(GetFromCartErrorState());
-  //   });
-  // }
+
   getFromCart() {
     emit(GetFromCartLoadingState());
     FirebaseFirestore.instance
@@ -176,9 +160,11 @@ class ShopCubit extends Cubit<ShopStates> {
       cartModel = [];
       event.docs.forEach((element) {
         cartModel.add(CartModel.fromJson(element.data()));
-        emit(GetFromCartSuccessState());
-        getTotalPrice();
-      });
+        pId.add(element.id.toString());
+      }
+      );
+      emit(GetFromCartSuccessState());
+      getTotalPrice();
     });
   }
 

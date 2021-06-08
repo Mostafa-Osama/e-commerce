@@ -8,8 +8,7 @@ import 'package:my_ecommerce/cubit/shop_cubit/shop_states.dart';
 import 'package:my_ecommerce/services/shared_preference.dart';
 import 'package:my_ecommerce/view/cart_screen/cart_edit_screen.dart';
 import 'package:my_ecommerce/view/edit_profile.dart';
-import 'package:my_ecommerce/view/login_screen/login_screen.dart';
-import 'package:my_ecommerce/view/my_orders_screen.dart';
+
 
 class HomeScreen extends StatelessWidget {
   @override
@@ -148,7 +147,7 @@ class HomeScreen extends StatelessWidget {
                               width:50,
                               child: MaterialButton(
                                 onPressed: () {
-                                  push(context, MyOrdersScreen());
+                                  push(context, EditProfileScreen());
                                 },
 
                                 child: Icon(Icons.edit,size: 20,color: Colors.white,),

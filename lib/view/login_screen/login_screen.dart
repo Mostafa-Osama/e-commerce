@@ -11,6 +11,7 @@ import 'package:my_ecommerce/view/login_screen/login_states.dart';
 import 'package:my_ecommerce/view/register_screen/register_screen.dart';
 
 class LoginScreen extends StatelessWidget {
+
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
@@ -28,7 +29,6 @@ class LoginScreen extends StatelessWidget {
               });
 
               SharedPreference.saveData(value: id, key: 'id');
-
 
             }
 
