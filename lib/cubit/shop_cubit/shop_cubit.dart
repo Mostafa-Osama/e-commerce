@@ -22,6 +22,9 @@ class ShopCubit extends Cubit<ShopStates> {
 
   static ShopCubit get(context) => BlocProvider.of(context);
 
+
+
+
   int selectedIndex = 0;
 
   List<String> title = [
@@ -275,7 +278,7 @@ class ShopCubit extends Cubit<ShopStates> {
 
   AddressModel addressModel;
 
-  getAllAddress() {
+  Future getAllAddress() {
     orderAddress = [];
     emit(GetAllAddressLoadingState());
     FirebaseFirestore.instance
@@ -300,32 +303,33 @@ class ShopCubit extends Cubit<ShopStates> {
     });
   }
 
-  String currentId = '';
+   String currentId = '';
 
-  getAddress({index}) {
+   Future getAddress({index}) async {
     emit(GetAddressLoadingState());
-    FirebaseFirestore.instance
-        .collection('users')
-        .doc(uId)
-        .collection('address')
-        .doc(addressId[index])
-        .get()
-        .then((value) {
-      addressModel = AddressModel.fromJson(value.data());
-      currentId = value.id;
-      print(addressModel.name);
-      print(addressModel.city);
-      print(currentId);
-      emit(GetAddressSuccessState());
-    }).catchError((onError) {
-      print(onError.toString());
-      emit(GetAddressErrorState());
-    });
+
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(uId)
+          .collection('address')
+          .doc(addressId[index])
+          .get()
+          .then((value) {
+        addressModel = AddressModel.fromJson(value.data());
+        currentId = value.id;
+        print(addressModel.name);
+        print(addressModel.city);
+        print(currentId);
+        emit(GetAddressSuccessState());
+      }).catchError((onError) {
+        print(onError.toString());
+        emit(GetAddressErrorState());
+      });
   }
 
   String orderId = '';
 
-  Future<void> setOrder({@required double grandPrice}) {
+   Future setOrder({@required double grandPrice}) {
     emit(SetOrderLoadingState());
     FirebaseFirestore.instance
         .collection('users')
@@ -336,7 +340,7 @@ class ShopCubit extends Cubit<ShopStates> {
         .add({'grandprice': totalPrice + 20}).then((value) {
       orderId = value.id;
 
-      setProductOrder(grandPrice: grandPrice);
+      setProductOrder(grandPrice: grandPrice,dateTime: DateTime.now().toString());
       emit(SetOrderSuccessState());
     }).catchError((onError) {
       emit(SetOrderErrorState());
@@ -348,13 +352,13 @@ class ShopCubit extends Cubit<ShopStates> {
   getSave() {
     name = [];
     cartModel.forEach((element) {
-      name.add({'name': element.name, 'qty': element.quantity.toString()});
+      name.add({'name': element.name, 'qty': element.quantity.toString(),'image':element.image});
     });
 
     return name.toList();
   }
 
-  setProductOrder({@required double grandPrice}) {
+  setProductOrder({@required double grandPrice,@required String dateTime}) {
     getSave();
     emit(SetOrderProductLoadingState());
     FirebaseFirestore.instance
@@ -364,13 +368,48 @@ class ShopCubit extends Cubit<ShopStates> {
         .doc(currentId)
         .collection('order')
         .doc(orderId)
-        .set({'order info': name.toList(), 'grand price': grandPrice}).then(
+        .set({'orderInfo': name.toList(), 'grandPrice': grandPrice , 'dateTime':dateTime}).then(
             (value) {
       emit(SetOrderProductSuccessState());
     }).catchError((onError) {
       emit(SetOrderProductErrorState());
     });
   }
+
+
+
+  List<OrderModel> orderList = [];
+
+
+  getOrder() async {
+    orderList = [];
+    emit(GetOrdersLoadingState());
+  await  FirebaseFirestore.instance
+        .collection('users')
+        .doc(uId)
+        .collection('address')
+        .doc(currentId)
+        .collection('order')
+        .get()
+        .then((value) {
+      value.docs.forEach((element) {
+
+        orderList.add(OrderModel.fromJson(element.data()));
+      }
+
+      );
+
+      print('From Cubit');
+      print('length ${orderList[0].order.list[0].name}');
+      emit(GetOrdersSuccessState());
+    }).catchError((onError) {
+      print(onError.toString());
+      emit(GetOrdersErrorState());
+    });
+  }
+
+
+
 
   bool check = false;
 
@@ -383,7 +422,6 @@ class ShopCubit extends Cubit<ShopStates> {
         .doc(addressId[index])
         .update({'status': !this.check}).then((value) {
       emit(CheckAddressSuccessState());
-      ;
     }).catchError((onError) {});
     emit(CheckAddressErrorState());
   }
@@ -396,31 +434,75 @@ class ShopCubit extends Cubit<ShopStates> {
     emit(ThemeModeState());
   }
 
-  List<OrderModel> orderList = [];
 
-  getOrder() {
-    emit(GetOrdersLoadingState());
+
+
+
+
+
+
+
+
+
+
+  Future<void> showMyDialog(context) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+
+          title: const Text('Insert Address Please'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: const <Widget>[
+                Text('You Didn\'t insert your address'),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Cancel'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+
+
+
+
+
+
+  void deleteCart() {
+    emit(DeleteCartLoadingState());
     FirebaseFirestore.instance
         .collection('users')
         .doc(uId)
-        .collection('address')
-        .doc(currentId)
-        .collection('order')
-        .get()
+        .collection('cart')
+        .doc(pId[0])
+        .delete()
         .then((value) {
-      value.docs.forEach((element) {
-        orderList.add(OrderModel.fromJson(element.data()));
+      pId.clear();
+      if (pId.length == 0) {
+        this.totalPrice = 0;
       }
-      );
-      print("${orderList[0].order}");
-      print("${orderList[0]}");
-      print("${orderList[0].grandPrice}");
-      emit(GetOrdersSuccessState());
+      emit(DeleteCartSuccessState());
+      getFromCart();
     }).catchError((onError) {
       print(onError.toString());
-      emit(GetOrdersErrorState());
+      emit(DeleteCartErrorState());
     });
   }
+
+
+
+
 
   signOut(context) {
     FirebaseAuth.instance.signOut().then((value) {

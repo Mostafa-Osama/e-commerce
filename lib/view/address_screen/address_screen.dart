@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:my_ecommerce/components/constant.dart';
 import 'package:my_ecommerce/components/reusable.dart';
 import 'package:my_ecommerce/cubit/shop_cubit/shop_cubit.dart';
 import 'package:my_ecommerce/cubit/shop_cubit/shop_states.dart';
 import 'package:my_ecommerce/model/address_model.dart';
+import 'package:my_ecommerce/services/shared_preference.dart';
 import 'package:my_ecommerce/view/address_screen/newaddress_screen.dart';
 
 class AddressScreen extends StatelessWidget {
@@ -23,7 +25,9 @@ class AddressScreen extends StatelessWidget {
             child: buildOrderInfo(
                 context, ShopCubit.get(context).orderAddress[index],index),
             onTap: (){
-              cubit.getAddress(index: index);
+              cubit.getAddress(index: index).then((value) {
+                SharedPreference.saveData(value: index, key: 'index');
+              });
               cubit.checked(index);
             },
           ),

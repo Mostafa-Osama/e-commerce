@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_ecommerce/components/constant.dart';
 import 'package:my_ecommerce/cubit/shop_cubit/shop_cubit.dart';
 import 'package:my_ecommerce/cubit/shop_cubit/shop_states.dart';
+import 'package:my_ecommerce/model/address_model.dart';
 import 'package:my_ecommerce/services/bloc_observer.dart';
 import 'package:my_ecommerce/services/shared_preference.dart';
 import 'package:my_ecommerce/view/layout/home_layout.dart';
@@ -13,6 +14,8 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await SharedPreference.init();
   uId = SharedPreference.getData(key: 'uId');
+  orderIndex= SharedPreference.getData(key: 'index');
+  print("orderIndex =$orderIndex");
  // isDark = SharedPreference.getData(key: 'theme');
   await Firebase.initializeApp();
 

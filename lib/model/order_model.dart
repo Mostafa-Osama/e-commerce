@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 class OrderModel {
   double grandPrice;
- // List<dynamic> order = [];
-  OrderInfo order;
+  String date;
+  Order order;
 
 
   OrderModel(
@@ -12,32 +12,52 @@ class OrderModel {
       });
 
   OrderModel.fromJson(Map<String, dynamic> json) {
-    grandPrice = json['grand price'];
-    order = OrderInfo.fromJson(json['order info']);
-
-  //  order.add(json['order info']);
+    grandPrice = json['grandPrice'];
+    date = json['dateTime'];
+    order = Order.fromJson(json['orderInfo']);
+    // print("order 0 = ${order.list[0].name}");
+    // print("order 0 = ${order.list[0].qty}");
+    // print("order 1 = ${order.list[1].name}");
+    // print("order 1 = ${order.list[1].qty}");
   }
+
 
 }
 
-class OrderInfo{
-  List<Order> order = [];
-
-  OrderInfo.fromJson(Map<String,dynamic> json){
-    json['0'].forEach((element) {
-
-      order.add(element);
-    });
-  }
-}
 
 
 class Order{
-  String name;
-  int qty;
 
-  Order.fromJson(Map<String, dynamic> json) {
+ List<OrderInfo> list = [];
+
+  Order.fromJson(List<dynamic> json) {
+
+    json.forEach((element) {
+      list.add(OrderInfo.fromJson(element));
+    });
+
+    // print('From Model');
+    // print(list[0].name);
+    // print(list[0].qty);
+    // print(list[1].name);
+    // print(list[1].qty);
+
+  }
+
+
+}
+
+
+
+
+class OrderInfo{
+  String name;
+  String qty;
+  String image;
+
+  OrderInfo.fromJson(Map<String,dynamic> json){
     name = json['name'];
     qty = json['qty'];
+    image = json['image'];
   }
 }

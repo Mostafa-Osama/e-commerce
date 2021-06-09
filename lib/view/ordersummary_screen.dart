@@ -7,7 +7,7 @@ import 'package:my_ecommerce/cubit/shop_cubit/shop_states.dart';
 import 'package:my_ecommerce/model/address_model.dart';
 import 'package:my_ecommerce/model/cart_model.dart';
 import 'package:my_ecommerce/view/address_screen/address_screen.dart';
-import 'package:my_ecommerce/view/address_screen/newaddress_screen.dart';
+import 'package:my_ecommerce/view/my_orders_screen.dart';
 
 class OrderSummary extends StatelessWidget {
   @override
@@ -16,6 +16,10 @@ class OrderSummary extends StatelessWidget {
       listener: (context, state) {
         if(state is SetOrderSuccessState){
           ShopCubit.get(context).getOrder();
+        }
+        if(state is GetOrdersSuccessState){
+          ShopCubit.get(context).deleteCart();
+          push(context, MyOrdersScreen());
         }
       },
       builder: (context, state) => ConditionalBuilder(
@@ -46,8 +50,9 @@ class OrderSummary extends StatelessWidget {
                       SizedBox(
                         height: 10,
                       ),
-                     ShopCubit.get(context).addressModel == null? Container(child: InkWell(child: Text('Add Address'),onTap: (){
+                     ShopCubit.get(context).addressModel == null? Container(child: InkWell(child: Text('Please Select an Address',style: TextStyle(color: Colors.blue,fontSize: 20),),onTap: (){
                        push(context, AddressScreen());
+                       ShopCubit.get(context);
                      },),) : buildOrderInfo(context, ShopCubit.get(context).addressModel),
                       SizedBox(
                         height: 10,
@@ -121,10 +126,11 @@ class OrderSummary extends StatelessWidget {
                         width: double.infinity,
                         child: MaterialButton(
                           onPressed: () {
+                            ShopCubit.get(context).addressModel == null? ShopCubit.get(context).showMyDialog(context):
                             ShopCubit.get(context).setOrder(grandPrice: ShopCubit.get(context).totalPrice + 20);
                           },
                           child: Text(
-                            'CONTINUE TO PAYMENT',
+                            'Order',
                             style: TextStyle(color: Colors.white),
                           ),
                           color: Colors.blue,

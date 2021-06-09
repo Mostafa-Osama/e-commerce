@@ -44,6 +44,16 @@ class DeleteFromCartSuccessState extends ShopStates{}
 class DeleteFromCartErrorState extends ShopStates{}
 
 
+
+
+
+class DeleteCartLoadingState extends ShopStates{}
+class DeleteCartSuccessState extends ShopStates{}
+class DeleteCartErrorState extends ShopStates{}
+
+
+
+
 class SetAddressLoadingState extends ShopStates{}
 class SetAddressSuccessState extends ShopStates{}
 class SetAddressErrorState extends ShopStates{}

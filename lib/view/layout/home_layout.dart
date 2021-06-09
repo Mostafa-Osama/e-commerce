@@ -8,6 +8,7 @@ import 'package:my_ecommerce/cubit/shop_cubit/shop_states.dart';
 import 'package:my_ecommerce/services/shared_preference.dart';
 import 'package:my_ecommerce/view/cart_screen/cart_edit_screen.dart';
 import 'package:my_ecommerce/view/edit_profile.dart';
+import 'package:my_ecommerce/view/my_orders_screen.dart';
 
 
 class HomeScreen extends StatelessWidget {
@@ -108,20 +109,26 @@ class HomeScreen extends StatelessWidget {
                     ],
                   ),
                   Padding(
-                    padding: const EdgeInsets.all(30.0),
+                    padding: const EdgeInsets.all(20.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Row(
-                          children: [
-                            Text('DarkThem'),
-                              Spacer(),
-                              Switch(value:ShopCubit.get(context).dark, onChanged: (onChanged){
-                                ShopCubit.get(context).changeMode();
-                                SharedPreference.saveData(value:ShopCubit.get(context).dark, key: 'theme');
-                                print(isDark);
-                              },),
-                          ],
+                        ListTile(
+                          title: Text('DarkTheme'),
+                          trailing:  Switch(value:ShopCubit.get(context).dark, onChanged: (onChanged){
+                            ShopCubit.get(context).changeMode();
+                            SharedPreference.saveData(value:ShopCubit.get(context).dark, key: 'theme');
+                            print(isDark);
+                          },),
+                        ),
+                        ListTile(
+
+                          title: Text('My Orders'),
+                          trailing: Icon(Icons.arrow_forward_ios),
+                          onTap: (){
+                            push(context, MyOrdersScreen());
+                          },
+
                         ),
                         SizedBox(height: 20,),
                         Row(
