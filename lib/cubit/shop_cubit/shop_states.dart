@@ -109,7 +109,6 @@ class GetTotalPriceSuccessState extends ShopStates{}
 
 
 
-class ThemeModeState extends ShopStates{}
 
 
 class GetOrdersLoadingState extends ShopStates{}

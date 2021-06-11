@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_ecommerce/components/constant.dart';
 import 'package:my_ecommerce/components/reusable.dart';
+import 'package:my_ecommerce/cubit/shop_cubit/Theme_cubit.dart';
 import 'package:my_ecommerce/cubit/shop_cubit/shop_cubit.dart';
 import 'package:my_ecommerce/cubit/shop_cubit/shop_states.dart';
 import 'package:my_ecommerce/services/shared_preference.dart';
@@ -115,10 +116,10 @@ class HomeScreen extends StatelessWidget {
                       children: [
                         ListTile(
                           title: Text('DarkTheme'),
-                          trailing:  Switch(value:ShopCubit.get(context).dark, onChanged: (onChanged){
-                            ShopCubit.get(context).changeMode();
-                            SharedPreference.saveData(value:ShopCubit.get(context).dark, key: 'theme');
-                            print(isDark);
+                          trailing:  Switch(value:context.read<ThemeCubit>().dark, onChanged: (onChanged){
+                            context.read<ThemeCubit>().changeMode();
+                            SharedPreference.saveData(value:context.read<ThemeCubit>().dark, key: 'theme');
+                            print(context.read<ThemeCubit>().dark);
                           },),
                         ),
                         ListTile(

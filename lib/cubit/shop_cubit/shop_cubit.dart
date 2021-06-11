@@ -418,13 +418,6 @@ class ShopCubit extends Cubit<ShopStates> {
     emit(CheckAddressErrorState());
   }
 
-  bool dark = isDark;
-
-  void changeMode() {
-    dark = !dark;
-
-    emit(ThemeModeState());
-  }
 
   Future<void> showMyDialog(context) async {
     return showDialog<void>(

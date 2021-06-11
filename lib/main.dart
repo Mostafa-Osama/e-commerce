@@ -11,13 +11,16 @@ import 'package:my_ecommerce/view/login_screen/login_cubit.dart';
 import 'package:my_ecommerce/view/login_screen/login_screen.dart';
 import 'package:my_ecommerce/view/login_screen/login_states.dart';
 
+import 'cubit/shop_cubit/Theme_cubit.dart';
+import 'cubit/shop_cubit/Theme_states.dart';
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await SharedPreference.init();
   uId = await SharedPreference.getData(key: 'uId');
   orderIndex= await  SharedPreference.getData(key: 'index');
   print("orderIndex =$orderIndex");
- // isDark = SharedPreference.getData(key: 'theme');
+  isDark = SharedPreference.getData(key: 'theme');
   await Firebase.initializeApp();
 
 
@@ -52,23 +55,22 @@ class MyApp extends StatelessWidget {
         BlocProvider(
          create: (context) => ShopCubit()..getCategories()..getProfile(uId)..getAllAddress(),
         ),
+        BlocProvider(create: (context) =>ThemeCubit()),
       ],
-      child:
-      // BlocConsumer<ShopCubit,ShopStates>(
-      //   listener: (context,state){},
-      //   builder:(context,state)=>
-            MaterialApp(
+      child: BlocConsumer<ThemeCubit,ThemeStates>(
+        listener: (context,state){},
+        builder:(context,state)=> MaterialApp(
           debugShowCheckedModeBanner: false,
           title: 'Shop App',
           theme: ThemeData(
             primarySwatch: Colors.blue,
           ),
-         // themeMode: ShopCubit.get(context).dark ? ThemeMode.dark:ThemeMode.light,
-          darkTheme: ThemeData.dark(
-          ),
+         themeMode: ThemeCubit.get(context).dark ? ThemeMode.dark:ThemeMode.light,
+          //themeMode: context.read<ShopCubit>().dark == true ? ThemeMode.dark:ThemeMode.light,
+          darkTheme: ThemeData.dark(),
           home: widget,
-       //),
-     ),
+       ),
+    ),
     );
   }
 }
