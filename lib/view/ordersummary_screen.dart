@@ -17,131 +17,138 @@ class OrderSummary extends StatelessWidget {
         if(state is SetOrderSuccessState){
           ShopCubit.get(context).getOrder();
         }
-        if(state is GetOrdersSuccessState){
-          ShopCubit.get(context).deleteCart();
-          push(context, MyOrdersScreen());
-        }
+
       },
-      builder: (context, state) => ConditionalBuilder(
-        condition: ShopCubit.get(context).cartModel.length == 0,
-        builder: (context)=>Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Center(child: Icon(Icons.list,size: 200,color: Colors.grey[300]),),
-            Center(child:Text('Pleas Add Some Product to your Cart',style: TextStyle(fontSize: 15,color: Colors.grey[300]),)),
-          ],
-        ),
-        fallback:(context)=> Container(
+      builder: (context, state) =>Container(
           padding: EdgeInsets.all(20),
           width: double.infinity,
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Text(
+                'Delivery Option',
+                style: TextStyle(color: Colors.grey, fontSize: 20),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              ShopCubit.get(context).addressModel == null? Container(child: InkWell(child: Text('Please Select an Address',style: TextStyle(color: Colors.blue,fontSize: 20),),onTap: (){
+                push(context, AddressScreen());
+                ShopCubit.get(context);
+              },),) : buildOrderInfo(context, ShopCubit.get(context).addressModel),
+              SizedBox(
+                height: 10,
+              ),
               Expanded(
                 child: SingleChildScrollView(
                   physics: ScrollPhysics(),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Delivery Option',
-                        style: TextStyle(color: Colors.grey, fontSize: 20),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                     ShopCubit.get(context).addressModel == null? Container(child: InkWell(child: Text('Please Select an Address',style: TextStyle(color: Colors.blue,fontSize: 20),),onTap: (){
-                       push(context, AddressScreen());
-                       ShopCubit.get(context);
-                     },),) : buildOrderInfo(context, ShopCubit.get(context).addressModel),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Text(
-                        'Shipment 1',
-                        style: TextStyle(color: Colors.grey, fontSize: 20),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      ListView.builder(
-                        itemBuilder: (context, index) => buildShipment(ShopCubit.get(context).cartModel[index]),
-                        shrinkWrap: true,
-                        itemCount: ShopCubit.get(context).cartModel.length,
-                        physics: NeverScrollableScrollPhysics(),
-                      ),
-                      Text(
-                        'Payment Summary',
-                        style: TextStyle(color: Colors.grey, fontSize: 20),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Container(
-                        padding: EdgeInsets.all(20),
-                        child: Column(children: [
-                          Row(
+                  child:ConditionalBuilder(
+                    condition: ShopCubit.get(context).cartModel.length == 0,
+                    builder: (context)=>Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Center(child: Icon(Icons.list,size: 200,color: Colors.grey[300]),),
+                        Center(child:Text('Pleas Add Some Product to your Cart',style: TextStyle(fontSize: 15,color: Colors.grey[300]),)),
+                      ],
+                    ),
+                    fallback: (context)=> Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Shipment 1',
+                          style: TextStyle(color: Colors.grey, fontSize: 20),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        ListView.builder(
+                          itemBuilder: (context, index) => buildShipment(ShopCubit.get(context).cartModel[index]),
+                          shrinkWrap: true,
+                          itemCount: ShopCubit.get(context).cartModel.length,
+                          physics: NeverScrollableScrollPhysics(),
+                        ),
+                        Text(
+                          'Payment Summary',
+                          style: TextStyle(color: Colors.grey, fontSize: 20),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Container(
+                          padding: EdgeInsets.all(20),
+                          child: Column(children: [
+                            Row(
+                              children: [
+                                Text('Order Cost'),
+                                Spacer(),
+                                Text("${ShopCubit.get(context).totalPrice} EGP"),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Row(
+                              children: [
+                                Text('Delivery Cost'),
+                                Spacer(),
+                                Text('${20.0} EGP'),
+                              ],
+                            ),
+                          ]),
+                        ),
+                        SizedBox(height: 20,),
+                        Container(
+                          padding: EdgeInsets.all(10),
+                          child: Column(
                             children: [
-                              Text('Order Cost'),
-                              Spacer(),
-                              Text("${ShopCubit.get(context).totalPrice} EGP"),
+                              Row(
+                                children: [
+                                  Text('Grand Total:'),
+                                  Spacer(),
+                                  Text(
+                                    '${ShopCubit.get(context).totalPrice + 20.0} EGP',
+                                    style: TextStyle(fontSize: 20),
+                                  )
+                                ],
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Container(
+                                  width: double.infinity,
+                                  child: MaterialButton(
+                                    onPressed: () {
+                                      ShopCubit.get(context).addressModel == null? ShopCubit.get(context).showMyDialog(context):
+                                      ShopCubit.get(context).setOrder(grandPrice: ShopCubit.get(context).totalPrice + 20).then((value) {
+                                        ShopCubit.get(context).deleteCart();
+                                        ShopCubit.get(context).selectedIndex =0;
+                                      });
+                                    },
+                                    child: Text(
+                                      'Order',
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                    color: Colors.blue,
+                                  )),
                             ],
                           ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Row(
-                            children: [
-                              Text('Delivery Cost'),
-                              Spacer(),
-                              Text('${20.0} EGP'),
-                            ],
-                          ),
-                        ]),
-                      ),
-                    ],
+                        ),
+                      ],
+                    ),
                   ),
+
+
+
+
                 ),
               ),
 
               //Grand Total and PaymentButton
-              Container(
-                padding: EdgeInsets.all(10),
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        Text('Grand Total:'),
-                        Spacer(),
-                        Text(
-                          '${ShopCubit.get(context).totalPrice + 20.0} EGP',
-                          style: TextStyle(fontSize: 20),
-                        )
-                      ],
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Container(
-                        width: double.infinity,
-                        child: MaterialButton(
-                          onPressed: () {
-                            ShopCubit.get(context).addressModel == null? ShopCubit.get(context).showMyDialog(context):
-                            ShopCubit.get(context).setOrder(grandPrice: ShopCubit.get(context).totalPrice + 20);
-                          },
-                          child: Text(
-                            'Order',
-                            style: TextStyle(color: Colors.white),
-                          ),
-                          color: Colors.blue,
-                        )),
-                  ],
-                ),
-              ),
+
             ],
           ),
         ),
-      ),
     );
   }
 
@@ -218,19 +225,19 @@ class OrderSummary extends StatelessWidget {
               ),
               Text.rich(TextSpan(children: <InlineSpan>[
                 TextSpan(
-                    text: '${addressModel.city}',
+                    text: '${addressModel.city} /',
                     style: TextStyle(fontSize: 15, color: Colors.grey)),
                 TextSpan(
-                    text: '${addressModel.street}',
+                    text: '${addressModel.street} /',
                     style: TextStyle(fontSize: 15, color: Colors.grey)),
                 TextSpan(
-                    text: '${addressModel.building}',
+                    text: '${addressModel.building} /',
                     style: TextStyle(fontSize: 15, color: Colors.grey)),
                 TextSpan(
-                    text: '${addressModel.floor}',
+                    text: '${addressModel.floor} /',
                     style: TextStyle(fontSize: 15, color: Colors.grey)),
                 TextSpan(
-                    text: '${addressModel.apartment}',
+                    text: '${addressModel.apartment} ',
                     style: TextStyle(fontSize: 15, color: Colors.grey)),
               ])),
               Text('${ShopCubit.get(context).model.phone}'),

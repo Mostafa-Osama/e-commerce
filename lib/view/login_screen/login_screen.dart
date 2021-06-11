@@ -23,8 +23,9 @@ class LoginScreen extends StatelessWidget {
         listener: (context, state) {
           if(state is LoginSuccessState)
             {
+
               SharedPreference.saveData(value: state.uId, key: 'uId').then((value){
-              //  context.read<ShopCubit>().getProfile(state.uId);
+               context.read<ShopCubit>().getProfile(state.uId);
                 push(context, HomeScreen());
               });
 

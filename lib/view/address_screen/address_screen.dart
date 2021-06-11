@@ -1,3 +1,4 @@
+import 'package:conditional_builder/conditional_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_ecommerce/components/constant.dart';
@@ -12,7 +13,11 @@ class AddressScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<ShopCubit,ShopStates>(
-      listener: (context,state){},
+      listener: (context,state){
+        if (state is GetAddressSuccessState){
+          ShopCubit.get(context).getOrder();
+        }
+      },
       builder: (context,state){
         var cubit = ShopCubit.get(context);
         return Scaffold(
@@ -20,19 +25,25 @@ class AddressScreen extends StatelessWidget {
             title: Text('Address Screen'),
 
           ),
-          body: ListView.builder(
-          itemBuilder: (context, index) => InkWell(
-            child: buildOrderInfo(
-                context, ShopCubit.get(context).orderAddress[index],index),
-            onTap: (){
-              cubit.getAddress(index: index).then((value) {
-                SharedPreference.saveData(value: index, key: 'index');
-              });
-              cubit.checked(index);
-            },
-          ),
-          itemCount: ShopCubit.get(context).orderAddress.length,
+          body: ConditionalBuilder(
+            condition: ShopCubit.get(context).orderAddress != null,
+            builder:(context)=> ListView.builder(
+            itemBuilder: (context, index) => InkWell(
+              child: buildOrderInfo(
+                  context, ShopCubit.get(context).orderAddress[index],index),
+              onTap: (){
+                cubit.getAddress(index: index).then((value) {
+                  SharedPreference.saveData(value: index, key: 'index');
+               //   cubit.getOrder();
+                });
+
+                cubit.checked(index);
+              },
+            ),
+            itemCount: ShopCubit.get(context).orderAddress.length,
       ),
+            fallback: (context)=>Center(child: Text('Add Your Address',style: TextStyle(fontSize: 20),),),
+          ),
           floatingActionButton: FloatingActionButton(
             child: Icon(Icons.add),
             onPressed: (){
@@ -66,16 +77,16 @@ class AddressScreen extends StatelessWidget {
                   ),
                   Text.rich(TextSpan(children: <InlineSpan>[
                     TextSpan(
-                        text: '${addressModel.city}',
+                        text: '${addressModel.city} /',
                         style: TextStyle(fontSize: 15, color: Colors.grey)),
                     TextSpan(
-                        text: '${addressModel.street}',
+                        text: '${addressModel.street} /',
                         style: TextStyle(fontSize: 15, color: Colors.grey)),
                     TextSpan(
-                        text: '${addressModel.building}',
+                        text: '${addressModel.building} /',
                         style: TextStyle(fontSize: 15, color: Colors.grey)),
                     TextSpan(
-                        text: '${addressModel.floor}',
+                        text: '${addressModel.floor} /',
                         style: TextStyle(fontSize: 15, color: Colors.grey)),
                     TextSpan(
                         text: '${addressModel.apartment}',

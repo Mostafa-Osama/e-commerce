@@ -22,9 +22,6 @@ class ShopCubit extends Cubit<ShopStates> {
 
   static ShopCubit get(context) => BlocProvider.of(context);
 
-
-
-
   int selectedIndex = 0;
 
   List<String> title = [
@@ -52,7 +49,7 @@ class ShopCubit extends Cubit<ShopStates> {
 
   UserModel model;
 
-  Future<void> getProfile(String uId) async {
+  getProfile(String uId) {
     emit(GetProfileLoadingState());
     FirebaseFirestore.instance
         .collection('users')
@@ -120,7 +117,6 @@ class ShopCubit extends Cubit<ShopStates> {
   }
 
   List<CartModel> cartModel = [];
-  List<String> pId = [];
 
   void addToCart(
       {@required String image,
@@ -141,8 +137,6 @@ class ShopCubit extends Cubit<ShopStates> {
       'quantity': quantity,
       'date': DateTime.now().toString(),
     }).then((value) {
-
-
       emit(SetToCartSuccessState());
     }).catchError((onError) {
       print(onError.toString());
@@ -150,6 +144,7 @@ class ShopCubit extends Cubit<ShopStates> {
     });
   }
 
+  List<String> pId = [];
 
   getFromCart() {
     emit(GetFromCartLoadingState());
@@ -164,8 +159,7 @@ class ShopCubit extends Cubit<ShopStates> {
       event.docs.forEach((element) {
         cartModel.add(CartModel.fromJson(element.data()));
         pId.add(element.id.toString());
-      }
-      );
+      });
       emit(GetFromCartSuccessState());
       getTotalPrice();
     });
@@ -207,7 +201,7 @@ class ShopCubit extends Cubit<ShopStates> {
   }
 
   void decrease(int index) {
-    if (cartModel[index].quantity == 0) {
+    if (cartModel[index].quantity == 1) {
       return;
     }
     cartModel[index].quantity--;
@@ -241,9 +235,6 @@ class ShopCubit extends Cubit<ShopStates> {
     });
   }
 
-  List<AddressModel> orderAddress = [];
-  List<String> addressId = [];
-
   setAddress({
     @required String name,
     @required String city,
@@ -276,9 +267,11 @@ class ShopCubit extends Cubit<ShopStates> {
     });
   }
 
+  List<AddressModel> orderAddress = [];
+  List<String> addressId = [];
   AddressModel addressModel;
 
-  Future getAllAddress() {
+  getAllAddress() {
     orderAddress = [];
     emit(GetAllAddressLoadingState());
     FirebaseFirestore.instance
@@ -303,33 +296,33 @@ class ShopCubit extends Cubit<ShopStates> {
     });
   }
 
-   String currentId = '';
+  String currentId = '';
 
-   Future getAddress({index}) async {
+  Future getAddress({index}) async {
     emit(GetAddressLoadingState());
 
-      await FirebaseFirestore.instance
-          .collection('users')
-          .doc(uId)
-          .collection('address')
-          .doc(addressId[index])
-          .get()
-          .then((value) {
-        addressModel = AddressModel.fromJson(value.data());
-        currentId = value.id;
-        print(addressModel.name);
-        print(addressModel.city);
-        print(currentId);
-        emit(GetAddressSuccessState());
-      }).catchError((onError) {
-        print(onError.toString());
-        emit(GetAddressErrorState());
-      });
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(uId)
+        .collection('address')
+        .doc(addressId[index])
+        .get()
+        .then((value) {
+      addressModel = AddressModel.fromJson(value.data());
+      currentId = value.id;
+      print(addressModel.name);
+      print(addressModel.city);
+      print(currentId);
+      emit(GetAddressSuccessState());
+    }).catchError((onError) {
+      print(onError.toString());
+      emit(GetAddressErrorState());
+    });
   }
 
   String orderId = '';
 
-   Future setOrder({@required double grandPrice}) {
+  Future setOrder({@required double grandPrice}) {
     emit(SetOrderLoadingState());
     FirebaseFirestore.instance
         .collection('users')
@@ -340,7 +333,8 @@ class ShopCubit extends Cubit<ShopStates> {
         .add({'grandprice': totalPrice + 20}).then((value) {
       orderId = value.id;
 
-      setProductOrder(grandPrice: grandPrice,dateTime: DateTime.now().toString());
+      setProductOrder(
+          grandPrice: grandPrice, dateTime: DateTime.now().toString());
       emit(SetOrderSuccessState());
     }).catchError((onError) {
       emit(SetOrderErrorState());
@@ -352,13 +346,17 @@ class ShopCubit extends Cubit<ShopStates> {
   getSave() {
     name = [];
     cartModel.forEach((element) {
-      name.add({'name': element.name, 'qty': element.quantity.toString(),'image':element.image});
+      name.add({
+        'name': element.name,
+        'qty': element.quantity.toString(),
+        'image': element.image
+      });
     });
 
     return name.toList();
   }
 
-  setProductOrder({@required double grandPrice,@required String dateTime}) {
+  setProductOrder({@required double grandPrice, @required String dateTime}) {
     getSave();
     emit(SetOrderProductLoadingState());
     FirebaseFirestore.instance
@@ -368,23 +366,23 @@ class ShopCubit extends Cubit<ShopStates> {
         .doc(currentId)
         .collection('order')
         .doc(orderId)
-        .set({'orderInfo': name.toList(), 'grandPrice': grandPrice , 'dateTime':dateTime}).then(
-            (value) {
+        .set({
+      'orderInfo': name.toList(),
+      'grandPrice': grandPrice,
+      'dateTime': dateTime
+    }).then((value) {
       emit(SetOrderProductSuccessState());
     }).catchError((onError) {
       emit(SetOrderProductErrorState());
     });
   }
 
-
-
   List<OrderModel> orderList = [];
 
-
-  getOrder() async {
+  getOrder() {
     orderList = [];
     emit(GetOrdersLoadingState());
-  await  FirebaseFirestore.instance
+    FirebaseFirestore.instance
         .collection('users')
         .doc(uId)
         .collection('address')
@@ -393,11 +391,8 @@ class ShopCubit extends Cubit<ShopStates> {
         .get()
         .then((value) {
       value.docs.forEach((element) {
-
         orderList.add(OrderModel.fromJson(element.data()));
-      }
-
-      );
+      });
 
       print('From Cubit');
       print('length ${orderList[0].order.list[0].name}');
@@ -407,9 +402,6 @@ class ShopCubit extends Cubit<ShopStates> {
       emit(GetOrdersErrorState());
     });
   }
-
-
-
 
   bool check = false;
 
@@ -434,24 +426,12 @@ class ShopCubit extends Cubit<ShopStates> {
     emit(ThemeModeState());
   }
 
-
-
-
-
-
-
-
-
-
-
-
   Future<void> showMyDialog(context) async {
     return showDialog<void>(
       context: context,
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
         return AlertDialog(
-
           title: const Text('Insert Address Please'),
           content: SingleChildScrollView(
             child: ListBody(
@@ -473,12 +453,6 @@ class ShopCubit extends Cubit<ShopStates> {
     );
   }
 
-
-
-
-
-
-
   void deleteCart() {
     emit(DeleteCartLoadingState());
     FirebaseFirestore.instance
@@ -499,10 +473,6 @@ class ShopCubit extends Cubit<ShopStates> {
       emit(DeleteCartErrorState());
     });
   }
-
-
-
-
 
   signOut(context) {
     FirebaseAuth.instance.signOut().then((value) {

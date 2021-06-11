@@ -55,7 +55,7 @@ class HomeScreen extends StatelessWidget {
             onTap: cubit.onItemTapped,
           ),
           drawer: ConditionalBuilder(
-            condition: state is GetProfileLoadingState,
+            condition: ShopCubit.get(context).model == null,
             builder: (context) => Center(
               child: CircularProgressIndicator(),
             ),

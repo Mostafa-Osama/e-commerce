@@ -1,6 +1,10 @@
+import 'package:my_ecommerce/cubit/shop_cubit/shop_cubit.dart';
+
 abstract class ShopStates{}
 
-class ShopInitialState extends ShopStates{}
+class ShopInitialState extends ShopStates{
+
+}
 
 
 class BottomNavBarChangeState extends ShopStates{}

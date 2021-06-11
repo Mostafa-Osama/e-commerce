@@ -49,7 +49,7 @@ class MyOrdersScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Center(child: Icon(Icons.list,size: 200,color: Colors.grey[300]),),
-              Center(child:Text('You Don\'t have Orders Yet',style: TextStyle(fontSize: 30,color: Colors.grey[300]),)),
+              Center(child:Text('You Don\'t have Orders Yet',style: TextStyle(fontSize: 25,color: Colors.grey[300]),)),
             ],
           )),
           )
