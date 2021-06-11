@@ -65,7 +65,7 @@ class MyApp extends StatelessWidget {
           theme: ThemeData(
             primarySwatch: Colors.blue,
           ),
-         themeMode: ThemeCubit.get(context).dark ? ThemeMode.dark:ThemeMode.light,
+         themeMode: context.read<ThemeCubit>().dark ? ThemeMode.dark:ThemeMode.light,
           //themeMode: context.read<ShopCubit>().dark == true ? ThemeMode.dark:ThemeMode.light,
           darkTheme: ThemeData.dark(),
           home: widget,

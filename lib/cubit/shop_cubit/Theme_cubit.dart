@@ -12,7 +12,7 @@ class ThemeCubit extends Cubit<ThemeStates>{
  static ThemeCubit get(context)=> BlocProvider.of(context);
 
 
-  bool dark = false;
+  bool dark = isDark;
 
 
 
