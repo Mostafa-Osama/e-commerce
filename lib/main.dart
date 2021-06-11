@@ -18,8 +18,6 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await SharedPreference.init();
   uId = await SharedPreference.getData(key: 'uId');
-  orderIndex= await  SharedPreference.getData(key: 'index');
-  print("orderIndex =$orderIndex");
   isDark = SharedPreference.getData(key: 'theme');
   await Firebase.initializeApp();
 

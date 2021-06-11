@@ -257,7 +257,6 @@ class ShopCubit extends Cubit<ShopStates> {
       'floor': floor,
       'apartment': apartment,
       'number': number,
-      'status': false,
     }).then((value) {
       getAllAddress();
       emit(SetAddressSuccessState());
@@ -403,20 +402,6 @@ class ShopCubit extends Cubit<ShopStates> {
     });
   }
 
-  bool check = false;
-
-  checked(index) {
-    emit(CheckAddressLoadingState());
-    FirebaseFirestore.instance
-        .collection('users')
-        .doc(uId)
-        .collection('address')
-        .doc(addressId[index])
-        .update({'status': !this.check}).then((value) {
-      emit(CheckAddressSuccessState());
-    }).catchError((onError) {});
-    emit(CheckAddressErrorState());
-  }
 
 
   Future<void> showMyDialog(context) async {

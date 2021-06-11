@@ -37,7 +37,6 @@ class AddressScreen extends StatelessWidget {
                //   cubit.getOrder();
                 });
 
-                cubit.checked(index);
               },
             ),
             itemCount: ShopCubit.get(context).orderAddress.length,

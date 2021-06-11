@@ -7,6 +7,5 @@ String uId = '';
 
 bool isDark = false;
 
-int orderIndex;
 
 String id = '';
