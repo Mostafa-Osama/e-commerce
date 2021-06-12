@@ -4,7 +4,11 @@ import 'package:my_ecommerce/components/constant.dart';
 import 'package:my_ecommerce/components/reusable.dart';
 import 'package:my_ecommerce/cubit/shop_cubit/shop_cubit.dart';
 import 'package:my_ecommerce/cubit/shop_cubit/shop_states.dart';
+import 'package:my_ecommerce/trans/locale_keys.g.dart';
 import 'package:my_ecommerce/view/layout/home_layout.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:easy_localization/easy_localization.dart';
+
 
 class EditProfileScreen extends StatelessWidget {
   TextEditingController emailController = TextEditingController();
@@ -69,7 +73,7 @@ class EditProfileScreen extends StatelessWidget {
                     buildTextFormField(
                         keyboardType: TextInputType.emailAddress,
                         prefixIcon: Icons.email,
-                        hintText: 'Enter New Email',
+                        hintText: LocaleKeys.new_email.tr(),
                         hintColor: color,
                         borderRadius: 20,
                         filled: true,
@@ -81,7 +85,7 @@ class EditProfileScreen extends StatelessWidget {
                     buildTextFormField(
                         keyboardType: TextInputType.text,
                         prefixIcon: Icons.person,
-                        hintText: 'Enter New Name',
+                        hintText: LocaleKeys.new_name.tr(),
                         hintColor: color,
                         borderRadius: 20,
                         filled: true,
@@ -93,7 +97,7 @@ class EditProfileScreen extends StatelessWidget {
                     buildTextFormField(
                         keyboardType: TextInputType.number,
                         prefixIcon: Icons.phone,
-                        hintText: 'Enter New Phone',
+                        hintText: LocaleKeys.new_phone.tr(),
                         hintColor: color,
                         borderRadius: 20,
                         filled: true,
@@ -121,7 +125,7 @@ class EditProfileScreen extends StatelessWidget {
                       },
                       child: Padding(
                         padding: const EdgeInsets.all(10.0),
-                        child: Text('Edit Profile',style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 15),),
+                        child: Text(LocaleKeys.edit_profile.tr(),style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 15),),
                       ),
                       color: Colors.blue[400],
                     ))

@@ -10,6 +10,14 @@ class ShopInitialState extends ShopStates{
 class BottomNavBarChangeState extends ShopStates{}
 
 
+class GetTitleState extends ShopStates{}
+
+
+
+
+
+
+
 
 class GetProfileLoadingState extends ShopStates{}
 class GetProfileSuccessState extends ShopStates{}

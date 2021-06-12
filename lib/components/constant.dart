@@ -8,4 +8,6 @@ String uId = '';
 bool isDark = false;
 
 
+String lang = 'en';
+
 String id = '';

@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_ecommerce/cubit/shop_cubit/shop_cubit.dart';
 import 'package:my_ecommerce/cubit/shop_cubit/shop_states.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:easy_localization/easy_localization.dart';
+
+
 
 class DetailsScreen extends StatelessWidget {
 

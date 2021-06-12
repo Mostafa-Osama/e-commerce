@@ -6,8 +6,12 @@ import 'package:my_ecommerce/cubit/shop_cubit/shop_cubit.dart';
 import 'package:my_ecommerce/cubit/shop_cubit/shop_states.dart';
 import 'package:my_ecommerce/model/address_model.dart';
 import 'package:my_ecommerce/model/cart_model.dart';
+import 'package:my_ecommerce/trans/locale_keys.g.dart';
 import 'package:my_ecommerce/view/address_screen/address_screen.dart';
-import 'package:my_ecommerce/view/my_orders_screen.dart';
+import 'package:easy_localization/easy_localization.dart';
+
+
+
 
 class OrderSummary extends StatelessWidget {
   @override
@@ -26,13 +30,13 @@ class OrderSummary extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Delivery Option',
+                LocaleKeys.delivery_options.tr(),
                 style: TextStyle(color: Colors.grey, fontSize: 20),
               ),
               SizedBox(
                 height: 10,
               ),
-              ShopCubit.get(context).addressModel == null? Container(child: InkWell(child: Text('Please Select an Address',style: TextStyle(color: Colors.blue,fontSize: 20),),onTap: (){
+              ShopCubit.get(context).addressModel == null? Container(child: InkWell(child: Text(LocaleKeys.select_address.tr(),style: TextStyle(color: Colors.blue,fontSize: 20),),onTap: (){
                 push(context, AddressScreen());
                 ShopCubit.get(context);
               },),) : buildOrderInfo(context, ShopCubit.get(context).addressModel),
@@ -49,14 +53,14 @@ class OrderSummary extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Center(child: Icon(Icons.list,size: 200,color: Colors.grey[300]),),
-                        Center(child:Text('Pleas Add Some Product to your Cart',style: TextStyle(fontSize: 15,color: Colors.grey[300]),)),
+                        Center(child:Text(LocaleKeys.add_to_cart.tr(),style: TextStyle(fontSize: 15,color: Colors.grey[300]),)),
                       ],
                     ),
                     fallback: (context)=> Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Shipment 1',
+                          LocaleKeys.shipment.tr(),
                           style: TextStyle(color: Colors.grey, fontSize: 20),
                         ),
                         SizedBox(
@@ -69,7 +73,7 @@ class OrderSummary extends StatelessWidget {
                           physics: NeverScrollableScrollPhysics(),
                         ),
                         Text(
-                          'Payment Summary',
+                          LocaleKeys.payment_summary.tr(),
                           style: TextStyle(color: Colors.grey, fontSize: 20),
                         ),
                         SizedBox(
@@ -80,9 +84,9 @@ class OrderSummary extends StatelessWidget {
                           child: Column(children: [
                             Row(
                               children: [
-                                Text('Order Cost'),
+                                Text(LocaleKeys.order_cost.tr()),
                                 Spacer(),
-                                Text("${ShopCubit.get(context).totalPrice} EGP"),
+                                Text("${ShopCubit.get(context).totalPrice} ${LocaleKeys.egp.tr()}"),
                               ],
                             ),
                             SizedBox(
@@ -90,9 +94,9 @@ class OrderSummary extends StatelessWidget {
                             ),
                             Row(
                               children: [
-                                Text('Delivery Cost'),
+                                Text(LocaleKeys.delivery_cost.tr()),
                                 Spacer(),
-                                Text('${20.0} EGP'),
+                                Text('${20.0} ${LocaleKeys.egp.tr()}'),
                               ],
                             ),
                           ]),
@@ -104,10 +108,10 @@ class OrderSummary extends StatelessWidget {
                             children: [
                               Row(
                                 children: [
-                                  Text('Grand Total:'),
+                                  Text('${LocaleKeys.grand_Total.tr()} :'),
                                   Spacer(),
                                   Text(
-                                    '${ShopCubit.get(context).totalPrice + 20.0} EGP',
+                                    '${ShopCubit.get(context).totalPrice + 20.0} ${LocaleKeys.egp.tr()}',
                                     style: TextStyle(fontSize: 20),
                                   )
                                 ],
@@ -120,13 +124,12 @@ class OrderSummary extends StatelessWidget {
                                   child: MaterialButton(
                                     onPressed: () {
                                       ShopCubit.get(context).addressModel == null? ShopCubit.get(context).showMyDialog(context):
-                                      ShopCubit.get(context).setOrder(grandPrice: ShopCubit.get(context).totalPrice + 20).then((value) {
+                                      ShopCubit.get(context).setOrder(grandPrice: ShopCubit.get(context).totalPrice + 20);
                                         ShopCubit.get(context).deleteCart();
-                                        ShopCubit.get(context).selectedIndex =0;
-                                      });
+                                        ShopCubit.get(context).selectedIndex = 0;
                                     },
                                     child: Text(
-                                      'Order',
+                                      LocaleKeys.order.tr(),
                                       style: TextStyle(color: Colors.white),
                                     ),
                                     color: Colors.blue,
@@ -186,7 +189,7 @@ class OrderSummary extends StatelessWidget {
                     ),
                     Row(
                       children: [
-                        Text('Qty:'),
+                        Text('${LocaleKeys.qty.tr()} :'),
                         SizedBox(
                           width: 5,
                         ),
@@ -246,7 +249,7 @@ class OrderSummary extends StatelessWidget {
                   push(context, AddressScreen());
                 },
                 child: Text(
-                  'Change Address',
+                  LocaleKeys.change_address.tr(),
                   style: TextStyle(color: Colors.blue),
                 ),
               ),

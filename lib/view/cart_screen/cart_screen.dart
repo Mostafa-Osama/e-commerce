@@ -5,6 +5,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_ecommerce/cubit/shop_cubit/shop_cubit.dart';
 import 'package:my_ecommerce/cubit/shop_cubit/shop_states.dart';
 import 'package:my_ecommerce/model/cart_model.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:my_ecommerce/trans/locale_keys.g.dart';
 
 class CartScreen extends StatelessWidget {
 
@@ -27,7 +30,7 @@ class CartScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Center(child: Icon(Icons.list,size: 200,color: Colors.grey[300]),),
-                Center(child:Text('Your Cart Is Empty',style: TextStyle(fontSize: 30,color: Colors.grey[300]),)),
+                Center(child:Text(LocaleKeys.empty_cart.tr(),style: TextStyle(fontSize: 30,color: Colors.grey[300]),)),
               ],
             )),
             fallback:(context)=>SafeArea(
@@ -53,13 +56,11 @@ class CartScreen extends StatelessWidget {
                       children:[
                         Column(
                           children: [
-                            Text('TotalPrice',style: TextStyle(color: Colors.blue,fontSize: 20),),
+                            Text(LocaleKeys.total_price.tr(),style: TextStyle(color: Colors.blue,fontSize: 20),),
                             SizedBox(height: 10,),
-                            Text( "${ShopCubit.get(context).totalPrice}"),
+                              Text( "${ShopCubit.get(context).totalPrice}"),
                           ],
                         ),
-                        Spacer(),
-                        TextButton(onPressed: (){}, child: Text('CheckOut',style: TextStyle(color: Colors.blue),)),
                       ],
                     ),
                   ),

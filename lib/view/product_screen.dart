@@ -4,6 +4,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_ecommerce/cubit/shop_cubit/shop_cubit.dart';
 import 'package:my_ecommerce/cubit/shop_cubit/shop_states.dart';
 import 'package:my_ecommerce/model/product_model.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:my_ecommerce/trans/locale_keys.g.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+
+
 
 class ProductScreen extends StatelessWidget {
   @override
@@ -109,23 +115,23 @@ class ProductScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         MaterialButton(
-                          onPressed: () async {
-                            for (int i = 0;
-                                i < ShopCubit.get(context).cartModel.length;
-                                i++) {
+                          onPressed: () {
+                            for (int i = 0; i < ShopCubit.get(context).cartModel.length; i++) {
                               if (ShopCubit.get(context).cartModel[i].name ==
                                   ShopCubit.get(context)
                                       .prodModel[index]
                                       .name) {
-                                print('if');
-                                print(ShopCubit.get(context).cartModel[i].name);
-                                print(ShopCubit.get(context)
-                                    .prodModel[index]
-                                    .name);
+                                Fluttertoast.showToast(
+                                    msg: 'Already Added To Cart',
+                                    toastLength: Toast.LENGTH_SHORT,
+                                    gravity: ToastGravity.BOTTOM,
+                                    timeInSecForIosWeb: 5,
+                                    backgroundColor: Colors.red,
+                                    textColor: Colors.white,
+                                    fontSize: 12.0);
                                 return;
                               }
                             }
-
                             ShopCubit.get(context).addToCart(
                                 image: ShopCubit.get(context)
                                     .prodModel[index]
@@ -140,11 +146,18 @@ class ProductScreen extends StatelessWidget {
                                     .prodModel[index]
                                     .oldPrice);
 
-
+                            Fluttertoast.showToast(
+                                msg: 'Added To Cart Successfully',
+                                toastLength: Toast.LENGTH_SHORT,
+                                gravity: ToastGravity.BOTTOM,
+                                timeInSecForIosWeb: 5,
+                                backgroundColor: Colors.green,
+                                textColor: Colors.white,
+                                fontSize: 12.0);
 
                           },
                           child: Text(
-                            'ADD TO Cart',
+                            LocaleKeys.add_cart.tr(),
                             style: TextStyle(color: Colors.white),
                           ),
                           color: Colors.blue,

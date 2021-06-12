@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_ecommerce/components/constant.dart';
 import 'package:my_ecommerce/components/reusable.dart';
+import 'package:my_ecommerce/trans/locale_keys.g.dart';
 import 'package:my_ecommerce/view/login_screen/login_screen.dart';
 import 'package:my_ecommerce/view/register_screen/register_cubit.dart';
 import 'package:my_ecommerce/view/register_screen/register_states.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class RegisterScreen extends StatelessWidget {
   TextEditingController nameController = TextEditingController();
@@ -52,7 +55,7 @@ class RegisterScreen extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           Text(
-                            'Register',
+                            LocaleKeys.register.tr(),
                             style: TextStyle(
                                 fontSize: 35,
                                 color: Colors.white,
@@ -62,7 +65,7 @@ class RegisterScreen extends StatelessWidget {
                             height: 5,
                           ),
                           Text(
-                            'Register to see our new products',
+                            LocaleKeys.register_text.tr(),
                             style: TextStyle(
                                 fontSize: 15,
                                 color: Colors.white,
@@ -91,7 +94,7 @@ class RegisterScreen extends StatelessWidget {
                             buildTextFormField(
                                 keyboardType: TextInputType.text,
                                 prefixIcon: Icons.person,
-                                hintText: 'Enter Your Name',
+                                hintText: LocaleKeys.name,
                                 hintColor: color,
                                 borderRadius: 20,
                                 filled: true,
@@ -103,7 +106,7 @@ class RegisterScreen extends StatelessWidget {
                             buildTextFormField(
                                 keyboardType: TextInputType.number,
                                 prefixIcon: Icons.phone,
-                                hintText: 'Enter Your Phone',
+                                hintText: LocaleKeys.phone.tr(),
                                 hintColor: color,
                                 borderRadius: 20,
                                 filled: true,
@@ -115,7 +118,7 @@ class RegisterScreen extends StatelessWidget {
                             buildTextFormField(
                                 keyboardType: TextInputType.emailAddress,
                                 prefixIcon: Icons.email,
-                                hintText: 'Enter Your Email',
+                                hintText: LocaleKeys.email.tr(),
                                 hintColor: color,
                                 borderRadius: 20,
                                 filled: true,
@@ -131,7 +134,7 @@ class RegisterScreen extends StatelessWidget {
                                 onSuffixPressed: () {
                                   RegisterCubit.get(context).show();
                                 },
-                                hintText: 'Enter Your Password',
+                                hintText: LocaleKeys.password.tr(),
                                 hintColor: color,
                                 borderRadius: 20,
                                 filled: true,
@@ -153,7 +156,7 @@ class RegisterScreen extends StatelessWidget {
                                 child: Padding(
                                   padding: const EdgeInsets.all(10.0),
                                   child: Text(
-                                    'Register',
+                                    LocaleKeys.register.tr(),
                                     style: TextStyle(color: Colors.white),
                                   ),
                                 ),

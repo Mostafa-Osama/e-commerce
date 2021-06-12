@@ -11,11 +11,13 @@ import 'package:my_ecommerce/model/category_model.dart';
 import 'package:my_ecommerce/model/order_model.dart';
 import 'package:my_ecommerce/model/product_model.dart';
 import 'package:my_ecommerce/model/user_model.dart';
+import 'package:my_ecommerce/trans/locale_keys.g.dart';
 import 'package:my_ecommerce/view/ordersummary_screen.dart';
 import 'package:my_ecommerce/services/shared_preference.dart';
 import 'package:my_ecommerce/view/cart_screen/cart_screen.dart';
 import 'package:my_ecommerce/view/login_screen/login_screen.dart';
 import 'package:my_ecommerce/view/category_screen.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class ShopCubit extends Cubit<ShopStates> {
   ShopCubit() : super(ShopInitialState());
@@ -24,16 +26,29 @@ class ShopCubit extends Cubit<ShopStates> {
 
   int selectedIndex = 0;
 
-  List<String> title = [
-    'CategoryScreen',
-    'CartScreen',
-    'OrderSummary',
-  ];
+  // List<String> title = [
+  //   LocaleKeys.category.tr(),
+  //   LocaleKeys.Cart.tr(),
+  //   LocaleKeys.order_summery.tr(),
+  // ];
+
+   String tit = LocaleKeys.category.tr();
+
+  getTitle(index){
+    if(index ==0){
+      tit = LocaleKeys.category.tr();
+    }else if(index == 1){
+      tit = LocaleKeys.Cart.tr();
+    } else{
+      tit = LocaleKeys.order_summery.tr();
+    }
+    emit(GetTitleState());
+  }
+
 
   List<Widget> widgetOptions = <Widget>[
     CategoryScreen(),
     CartScreen(),
-    //NewAddressScreen(),
     OrderSummary(),
     // AddressScreen(),
   ];
@@ -43,6 +58,7 @@ class ShopCubit extends Cubit<ShopStates> {
       getFromCart();
     }
     selectedIndex = index;
+    getTitle(selectedIndex);
 
     emit(BottomNavBarChangeState());
   }
@@ -118,12 +134,12 @@ class ShopCubit extends Cubit<ShopStates> {
 
   List<CartModel> cartModel = [];
 
-  void addToCart(
+   addToCart(
       {@required String image,
       @required String name,
       @required String price,
       @required String oldPrice,
-      int quantity = 1}) {
+      int quantity = 1}){
     emit(SetToCartLoadingState());
     FirebaseFirestore.instance
         .collection('users')
@@ -321,7 +337,7 @@ class ShopCubit extends Cubit<ShopStates> {
 
   String orderId = '';
 
-  Future setOrder({@required double grandPrice}) {
+   setOrder({@required double grandPrice}) {
     emit(SetOrderLoadingState());
     FirebaseFirestore.instance
         .collection('users')

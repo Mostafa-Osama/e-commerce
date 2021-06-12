@@ -4,6 +4,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_ecommerce/cubit/shop_cubit/shop_cubit.dart';
 import 'package:my_ecommerce/cubit/shop_cubit/shop_states.dart';
 import 'package:my_ecommerce/model/order_model.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:my_ecommerce/trans/locale_keys.g.dart';
+
+
 
 class Order {
   final String grandTotal;
@@ -27,7 +31,7 @@ class MyOrdersScreen extends StatelessWidget {
           condition: cubit.orderList.length > 0,
           builder:(context)=> Scaffold(
             appBar: AppBar(
-              title: Text('My Orders Screen'),
+              title: Text(LocaleKeys.my_orders.tr()),
             ),
             body: SafeArea(
               child: ListView.separated(
@@ -42,14 +46,14 @@ class MyOrdersScreen extends StatelessWidget {
           ),
           fallback: (context)=> Scaffold(
             appBar: AppBar(
-              title: Text('MyOrders'),
+              title: Text(LocaleKeys.my_orders.tr()),
             ),
             body: SafeArea(child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Center(child: Icon(Icons.list,size: 200,color: Colors.grey[300]),),
-              Center(child:Text('You Don\'t have Orders Yet',style: TextStyle(fontSize: 25,color: Colors.grey[300]),)),
+              Center(child:Text(LocaleKeys.do_not_have_orders.tr(),style: TextStyle(fontSize: 25,color: Colors.grey[300]),)),
             ],
           )),
           )
@@ -66,13 +70,13 @@ class MyOrdersScreen extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Order num : ${index+1}',style: TextStyle(fontSize: 20,color: Colors.grey),),
+          Text('${LocaleKeys.order_num.tr()}: ${index+1}',style: TextStyle(fontSize: 20,color: Colors.grey),),
           SizedBox(height: 10,),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(children: [
-                Text('Order Total Price :',style: TextStyle(color: Colors.blue, fontSize: 20),),
+                Text('${LocaleKeys.total_price.tr()} :',style: TextStyle(color: Colors.blue, fontSize: 20),),
                 Spacer(),
 
                 Text(
@@ -83,7 +87,7 @@ class MyOrdersScreen extends StatelessWidget {
               SizedBox(height: 10,),
               Row(
                 children: [
-                  Text('Order Date :',style: TextStyle(color: Colors.blue, fontSize: 20),),
+                  Text('${LocaleKeys.order_date.tr()} :',style: TextStyle(color: Colors.blue, fontSize: 20),),
               Spacer(),
 
                   Text(
@@ -95,7 +99,7 @@ class MyOrdersScreen extends StatelessWidget {
               SizedBox(height: 10,),
               Row(
                 children: [
-                  Text('Order State :',style: TextStyle(color: Colors.blue, fontSize: 20),),
+                  Text('${LocaleKeys.order_state.tr()} :',style: TextStyle(color: Colors.blue, fontSize: 20),),
                   Spacer(),
 
                   Text(
@@ -131,7 +135,7 @@ class MyOrdersScreen extends StatelessWidget {
                       children: [
                         Text('${orderModel.order.list[ind].name}',style: TextStyle(color: Colors.blue, fontSize: 15),),
                         SizedBox(height: 10,),
-                        Text('Qty :${orderModel.order.list[ind].qty}',style: TextStyle(color: Colors.blue, fontSize: 15)),
+                        Text('${LocaleKeys.qty.tr()} :${orderModel.order.list[ind].qty}',style: TextStyle(color: Colors.blue, fontSize: 15)),
                       ],
                     )
                 ),
@@ -146,58 +150,6 @@ class MyOrdersScreen extends StatelessWidget {
     );
   }
 }
-
-
-
-// ListView.builder(
-// physics: NeverScrollableScrollPhysics(),
-// shrinkWrap: true,
-// itemBuilder: (context, ind) => Row(
-// mainAxisAlignment: MainAxisAlignment.start,
-// children: [
-// Text('${orderModel.order.list[ind].name}',style: TextStyle(color: Colors.blue, fontSize: 15),),
-// SizedBox(width: 20,),
-// Text('Qty :${orderModel.order.list[ind].qty}',style: TextStyle(color: Colors.blue, fontSize: 15),),
-// ],
-// ),
-// itemCount: orderModel.order.list.length,
-// ),
-
-
-
-
-
-
-
-
-
-//
-// Card(child:Row(
-// children: [
-// Container(
-// width: 120,
-// height: 120,
-// decoration: BoxDecoration(
-// image: DecorationImage(image: NetworkImage('https://firebasestorage.googleapis.com/v0/b/mye-commerce-7b81c.appspot.com/o/chef.png?alt=media&token=5330cad0-7327-4f3a-8098-2c4acfb65405')),
-// ),
-// ),
-// Container(
-// height: 120,
-// width: 160,
-// child: Column(
-// mainAxisAlignment: MainAxisAlignment.center,
-// crossAxisAlignment: CrossAxisAlignment.center,
-// children: [
-// Text('Product Name'),
-// Text('Qty :  1'),
-// ],
-// )
-// ),
-// ],
-// ) ,),
-
-
-
 
 
 

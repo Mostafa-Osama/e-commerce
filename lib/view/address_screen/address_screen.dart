@@ -7,7 +7,9 @@ import 'package:my_ecommerce/cubit/shop_cubit/shop_cubit.dart';
 import 'package:my_ecommerce/cubit/shop_cubit/shop_states.dart';
 import 'package:my_ecommerce/model/address_model.dart';
 import 'package:my_ecommerce/services/shared_preference.dart';
+import 'package:my_ecommerce/trans/locale_keys.g.dart';
 import 'package:my_ecommerce/view/address_screen/newaddress_screen.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class AddressScreen extends StatelessWidget {
   @override
@@ -22,7 +24,9 @@ class AddressScreen extends StatelessWidget {
         var cubit = ShopCubit.get(context);
         return Scaffold(
           appBar: AppBar(
-            title: Text('Address Screen'),
+            title: Text(
+              LocaleKeys.address_title.tr(),
+            ),
 
           ),
           body: ConditionalBuilder(
@@ -41,7 +45,7 @@ class AddressScreen extends StatelessWidget {
             ),
             itemCount: ShopCubit.get(context).orderAddress.length,
       ),
-            fallback: (context)=>Center(child: Text('Add Your Address',style: TextStyle(fontSize: 20),),),
+            fallback: (context)=>Center(child: Text(LocaleKeys.add_address.tr(),style: TextStyle(fontSize: 20),),),
           ),
           floatingActionButton: FloatingActionButton(
             child: Icon(Icons.add),

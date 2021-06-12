@@ -1,5 +1,4 @@
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:conditional_builder/conditional_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,13 +7,10 @@ import 'package:my_ecommerce/cubit/shop_cubit/shop_cubit.dart';
 import 'package:my_ecommerce/cubit/shop_cubit/shop_states.dart';
 import 'package:my_ecommerce/model/category_model.dart';
 import 'package:my_ecommerce/view/product_screen.dart';
+import 'package:easy_localization/easy_localization.dart';
 
-class Category {
-  final String name;
-  final String photo;
 
-  Category({@required this.name, @required this.photo});
-}
+
 
 class Carousel{
   final String image;
@@ -23,32 +19,7 @@ class Carousel{
 }
 
 class CategoryScreen extends StatelessWidget {
-  List<Category> catList = [
-    Category(
-        name: 'Clothes',
-        photo:
-            'https://firebasestorage.googleapis.com/v0/b/mye-commerce-7b81c.appspot.com/o/clothes.png?alt=media&token=71475f06-ab5e-4f42-ab9e-31c6752861cd'),
-    Category(
-        name: 'Tech',
-        photo:
-            'https://firebasestorage.googleapis.com/v0/b/mye-commerce-7b81c.appspot.com/o/tech.png?alt=media&token=9601d50c-ab4d-4626-870e-707a5d43affe'),
-    Category(
-        name: 'Kitchen',
-        photo:
-            'https://firebasestorage.googleapis.com/v0/b/mye-commerce-7b81c.appspot.com/o/chef.png?alt=media&token=5330cad0-7327-4f3a-8098-2c4acfb65405'),
-    Category(
-        name: 'gaming',
-        photo:
-            'https://firebasestorage.googleapis.com/v0/b/mye-commerce-7b81c.appspot.com/o/gaming.png?alt=media&token=5abd9359-ddad-4ebd-9f0d-1600bebfc76e'),
-  ];
 
-  // List<Carousel> carouselList =
-  // [
-  //     Carousel(image: 'https://firebasestorage.googleapis.com/v0/b/mye-commerce-7b81c.appspot.com/o/sale1.png?alt=media&token=e595a0a8-76d3-4a75-bb50-56167e97d664'),
-  //     Carousel(image: 'https://firebasestorage.googleapis.com/v0/b/mye-commerce-7b81c.appspot.com/o/sale2.jpg?alt=media&token=90220549-f2c9-431c-a482-14c4fa0af45c'),
-  //     Carousel(image: 'https://firebasestorage.googleapis.com/v0/b/mye-commerce-7b81c.appspot.com/o/sale3.jpg?alt=media&token=7eeb5968-1666-4a3e-b5c0-c6d61c301122'),
-  //
-  // ];
 
   @override
   Widget build(BuildContext context) {
@@ -123,7 +94,7 @@ class CategoryScreen extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: Colors.black.withOpacity(0.2)
                 ),
-                  child: Center(child: Text('${category.name}',style: TextStyle(color: Colors.blue[300]),textAlign: TextAlign.center,)))),
+                  child: Center(child: Text('${category.name.tr()}',style: TextStyle(color: Colors.blue[300]),textAlign: TextAlign.center,)))),
         ],
       ),
     );
