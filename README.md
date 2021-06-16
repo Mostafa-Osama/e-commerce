@@ -14,6 +14,12 @@ This project is a starting point for a Flutter application.
 
 4-localization (arabic and english)
 
+(important) run this two command lines in terminals :
+
+1- flutter pub run easy_localization:generate -S "assets/lang" -O "lib/trans" .
+
+2- flutter pub run easy_localization:generate -S "assets/lang" -O "lib/trans" -o "locale_keys.g.dart" -f keys
+
 A few resources to get you started if this is your first Flutter project:
 
 - [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
